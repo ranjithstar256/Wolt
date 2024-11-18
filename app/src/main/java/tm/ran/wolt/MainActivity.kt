@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -58,7 +60,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
 
-            CustomScaffold()
+            SimpleLazyColumn()
+
+            //CustomScaffold()
 
             //ScaffoldExample()
             //CombinedScreen()
@@ -189,15 +193,16 @@ class MainActivity : ComponentActivity() {
 
             floatingActionButton = {
                 FloatingActionButton(onClick = {
-                Toast.makeText(this@MainActivity,
-                    "Floating Action Button", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Floating Action Button", Toast.LENGTH_SHORT
+                    ).show()
 
-                 }) {
+                }) {
                     Text("+")
                 }
             },
-            content = {
-                padding ->
+            content = { padding ->
                 Column(
                     modifier = Modifier
                         .padding(padding)
@@ -212,14 +217,8 @@ class MainActivity : ComponentActivity() {
                 }
             },
 
-        )
+            )
     }
-
-
-
-
-
-
 
 
     @OptIn(ExperimentalLayoutApi::class)
@@ -232,11 +231,10 @@ class MainActivity : ComponentActivity() {
             Column(
                 modifier = Modifier
                     .padding(20.dp)
-                    .padding(padding)
-                     ,
+                    .padding(padding),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-             /* *//*  Image(
+                /* *//*  Image(
                     painterResource(id = android.R.drawable.btn_plus),
                     contentDescription =
                     "instagram logo",
@@ -266,21 +264,20 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun CustomScaffold() {
         val datePicker = TimePickerDialog(
-            LocalContext.current
-            ,null, 2022, 0, true
+            LocalContext.current, null, 2022, 0, true
         )
         Scaffold(
 
             topBar = { CustomTopBar() },
-            content = { h -> MainContent(h)},
-            bottomBar = { CustomBottomBar()},
+            content = { h -> MainContent(h) },
+            bottomBar = { CustomBottomBar() },
             floatingActionButton = {
                 FloatingActionButton(
                     onClick = {
                         datePicker.show()
                     }
                 ) {
-                    Icon(Icons.Filled.Add,"")
+                    Icon(Icons.Filled.Add, "")
                 }
             }
         )
@@ -357,7 +354,52 @@ class MainActivity : ComponentActivity() {
             }
         )
     }
+
+
+    @Composable
+    fun SimpleLazyColumn() {
+
+        LazyColumn {
+
+            item{
+                Text(text = "Hello")
+            }
+            item{
+                Button({}) {
+                    Text(text = "Button")
+                }
+            }
+
+            items(100) {
+
+                Row (Modifier.padding(20.dp)
+                    .fillMaxWidth().background(Color.LightGray),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start) {
+
+                    Image(
+                        painter = painterResource(id = R.drawable.knowledge),
+                        contentDescription = null,
+                        modifier = Modifier.padding(start = 20.dp, end = 20.dp)
+                    )
+
+                    Text(text = "Item number is $it", Modifier.padding(start = 20.dp, end = 20.dp))
+
+
+                }
+
+            }
+        }
+
+    }
+
+
+
+
+
+
 }
+
 
 
 
